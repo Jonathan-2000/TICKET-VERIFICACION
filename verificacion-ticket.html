@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Ticket</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .verified-logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .message {
+            font-size: 24px;
+            color: #4CAF50;
+        }
+        .ticket-number {
+            font-size: 20px;
+            color: #333;
+            margin-top: 10px;
+        }
+        .error {
+            color: #f44336;
+        }
+        .incorrect-logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Placeholder for the verification logo -->
+    <img src="logo-Verificado.png" alt="Verificado" class="verified-logo" id="verified-logo" style="display: none;">
+    <img src="incorrecto.png" alt="Incorrecto" class="incorrect-logo" id="incorrect-logo" style="display: none;">
+    <div id="message" class="message"></div>
+    <div id="ticket-number" class="ticket-number"></div>
+
+    <!-- Placeholder for the verification sound -->
+    <audio id="success-sound" src="sonido-Verificacion.mp3" preload="auto"></audio>
+
+    <script>
+        // Predefine the valid ticket numbers
+        const validTickets = [];
+        for (let i = 1; i <= 52; i++) {
+            validTickets.push(`TICKET-${String(i).padStart(6, '0')}`);
+        }
+
+        // Function to get query parameters from the URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Get the ticket number from the URL
+        const ticketNumber = getQueryParam('ticket');
+
+        // Get elements
+        const messageElement = document.getElementById('message');
+        const ticketNumberElement = document.getElementById('ticket-number');
+        const verifiedLogo = document.getElementById('verified-logo');
+        const incorrectLogo = document.getElementById('incorrect-logo');
+
+        // Check if the ticket number is valid
+        if (validTickets.includes(ticketNumber)) {
+            messageElement.textContent = '¡Ticket Verificado con Éxito!';
+            ticketNumberElement.textContent = `Número de Ticket: ${ticketNumber}`;
+            verifiedLogo.style.display = 'block';
+        } else {
+            messageElement.textContent = 'Número de Ticket no Válido';
+            ticketNumberElement.textContent = '';
+            messageElement.classList.add('error');
+            incorrectLogo.style.display = 'block';
+        }
+
+        // Play sound when the page loads
+        window.onload = function() {
+            document.getElementById('success-sound').play();
+        };
+    </script>
+</body>
+</html>
